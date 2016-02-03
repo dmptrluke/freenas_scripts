@@ -1,5 +1,10 @@
 #!/bin/bash
 
+# WARNING
+# This script is designed for my specific use case.
+# There is a 99% chance you DO NOT want to run this on your server.
+# It won't do anything bad, but it won't be very useful.
+
 # Collectd config file
 conf=/etc/local/collectd.conf
 

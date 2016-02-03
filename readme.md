@@ -1,0 +1,1 @@
+My collection of scripts for my FreeNAS box. Most of these are taken from the FreeNAS forums and modified for my use.

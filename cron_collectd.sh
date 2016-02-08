@@ -24,8 +24,8 @@ else
 	echo "Interval 30
 $(cat $conf)" > $conf
     echo 'Include "/root/custom/collectd/*.conf"' >> $conf
-    sed -i 's/LoadPlugin zfs_arc$//' $conf
-    perl -pe 's/\Q+(p[0123456789]+)?(\.eli)?//' $conf
+    sed -i '' 's/LoadPlugin zfs_arc$//' $conf
+    perl -p -i'.bak' -e 's/\Q+(p[0123456789]+)?(\.eli)?//' $conf
     service collectd restart
     logger -p user.warn -t "collectd" \
          "Added custom configuration to collectd and restarted service."

@@ -2,7 +2,9 @@
 
 ### Parameters ###
 cores=4
-drives="ada0 ada1 ada2"
+drives=$(for drive in $(sysctl -n kern.disks); do \
+if [ "$(smartctl -i /dev/${drive} | grep "Serial Number" | awk '{print $3}')" ]
+then printf ${drive}" "; fi done | awk '{for (i=NF; i!=0 ; i--) print $i }')
 
 ### CPU ###
 echo ""

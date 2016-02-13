@@ -3,7 +3,9 @@
 ### Parameters ###
 logfile="/tmp/smart_report.tmp"
 subject="SMART Status Report for FreeNAS"
-drives="ada0 ada1 ada2"
+drives=$(for drive in $(sysctl -n kern.disks); do \
+if [ "$(smartctl -i /dev/${drive} | grep "Serial Number" | awk '{print $3}')" ]
+then printf ${drive}" "; fi done | awk '{for (i=NF; i!=0 ; i--) print $i }')
 tempWarn=40
 tempCrit=45
 sectorsCrit=10

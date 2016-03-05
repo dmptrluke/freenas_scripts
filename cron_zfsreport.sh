@@ -3,7 +3,7 @@
 ### Parameters ###
 logfile="/tmp/zpool_report.tmp"
 subject="ZPool Status Report for FreeNAS"
-pools="freenas-boot Tank"
+pools="freenas-boot Tank SSD"
 usedWarn=75
 usedCrit=90
 scrubAgeWarn=30

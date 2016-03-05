@@ -1,6 +1,6 @@
 #!/bin/sh
 
-#store the start timestamp
+# store the start timestamp
 timestamp=$(date +%s)
 
 drives=$(for drive in $(sysctl -n kern.disks); do \

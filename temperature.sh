@@ -20,7 +20,7 @@ echo ""
 for drive in $drives
 do
     serial="$(smartctl -i /dev/${drive} | grep "Serial Number" | awk '{print $3}')"
-    temp="$(smartctl -A /dev/${drive} | grep "Temperature_Celsius" | awk '{print $10}')"
+    temp="$(smartctl -A /dev/${drive} | grep -E "Temperature_Celsius|Airflow_Temperature_Cel" | awk '{print $10}')"
     printf "%s %-15s: %s C\n" "$drive" "$serial" "$temp"
 done
 echo ""

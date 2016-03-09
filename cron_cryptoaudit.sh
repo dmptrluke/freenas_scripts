@@ -9,7 +9,7 @@ locations=("/mnt/Tank/Shared/Audit")
 for i in "${locations[@]}"
 do
  cd "$i"
- if ! md5 * | /mnt/Tank/custom/cryptoaudit/hashes_crypto.chk
+ if ! md5 * | diff /mnt/Tank/custom/cryptoaudit/hashes_crypto.chk -
  then
 
   # Header Stuff

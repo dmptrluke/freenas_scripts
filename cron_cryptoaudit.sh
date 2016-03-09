@@ -4,20 +4,19 @@
 
 PATH=/sbin:/bin:/usr/sbin:/usr/bin:/usr/games:/usr/local/sbin:/usr/local/bin:/root/bin:/usr/local/fusion-io
 
-DIFF_LOG_FILE = "/tmp/crypto_diff.log"
-NET_LOG_FILE = "/tmp/crypto_net.log"
-MAIL_FILE="/tmp/crypto_alert.mail"
-
 locations=("/mnt/Tank/Shared/Audit")
 
 for i in "${locations[@]}"
 do
  cd "$i"
+ DIFF_LOG_FILE="/tmp/crypto_diff.log"
  if ! md5 * | diff /mnt/Tank/custom/cryptoaudit/hashes_crypto.chk - > $DIFF_LOG_FILE
  then
 
   # Header Stuff
-  #NET_LOG_FILE="/tmp/cryptoaudit.log"
+  NET_LOG_FILE="/tmp/crypto_net.log"
+  MAIL_FILE="/tmp/crypto_alert.mail"
+
 
   #netstat -antu | awk '$5 ~ /[0-9]:/{split($5, a, ":"); ips[a[1]]++} END {for (ip in ips) print ips[ip], ip | "/opt/bin/sort -k1 -nr"}' | grep 192.168 >> $NET_LOG_FILE
 
@@ -28,9 +27,9 @@ do
 
   # Build Mail
   {
-          echo "SUBJECT: $MAIL_HEADER_SUBJECT"
-          echo ""
-          echo "An anti-cryptolocker honeypot on the server Nyx has been triggered."
+    echo "SUBJECT: $MAIL_HEADER_SUBJECT"
+    echo ""
+    echo "An anti-cryptolocker honeypot on the server Nyx has been triggered."
     echo ""
     echo "The following location has been tampered with:"
           echo "$i"

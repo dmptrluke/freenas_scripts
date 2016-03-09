@@ -4,37 +4,38 @@
 
 PATH=/sbin:/bin:/usr/sbin:/usr/bin:/usr/games:/usr/local/sbin:/usr/local/bin:/root/bin:/usr/local/fusion-io
 
+DIFF_LOG_FILE = "/tmp/crypto_diff.log"
+NET_LOG_FILE = "/tmp/crypto_net.log"
+MAIL_FILE="/tmp/crypto_alert.mail"
+
 locations=("/mnt/Tank/Shared/Audit")
 
 for i in "${locations[@]}"
 do
  cd "$i"
- if ! md5 * | diff /mnt/Tank/custom/cryptoaudit/hashes_crypto.chk -
+ if ! md5 * | diff /mnt/Tank/custom/cryptoaudit/hashes_crypto.chk - > $DIFF_LOG_FILE
  then
 
   # Header Stuff
-  #TMP_LOG_FILE="/tmp/cryptoaudit.log"
+  #NET_LOG_FILE="/tmp/cryptoaudit.log"
 
-  #netstat -antu | awk '$5 ~ /[0-9]:/{split($5, a, ":"); ips[a[1]]++} END {for (ip in ips) print ips[ip], ip | "/opt/bin/sort -k1 -nr"}' | grep 192.168 >> $TMP_LOG_FILE
+  #netstat -antu | awk '$5 ~ /[0-9]:/{split($5, a, ":"); ips[a[1]]++} END {for (ip in ips) print ips[ip], ip | "/opt/bin/sort -k1 -nr"}' | grep 192.168 >> $NET_LOG_FILE
 
   # Mail Variables
-  MAIL_FILE="/tmp/crypto_alert.mail"
   MAIL_TO="root"
-  MAIL_HEADER_SUBJECT="CRYPTOLOCKER ALERT - LOCATION"
+  MAIL_HEADER_SUBJECT="CryptoLocker Honeypot Triggered on Nyx"
   MAIL="sendmail"
 
   # Build Mail
   {
           echo "SUBJECT: $MAIL_HEADER_SUBJECT"
           echo ""
-          echo "CryptoLocker has compromised the filesystem on the nyx file server."
+          echo "An anti-cryptolocker honeypot on the server Nyx has been triggered."
     echo ""
-    echo "Take steps immediately or extreme data loss may occur!"
-    echo ""
-    echo "The following location has been infected:"
+    echo "The following location has been tampered with:"
           echo "$i"
     echo ""
-    echo "IP Connection information below:"
+    echo "Details of modified files:"
     #cat $TMP_LOG_FILE
   } > $MAIL_FILE
 
@@ -42,6 +43,6 @@ do
   $MAIL $MAIL_TO < $MAIL_FILE
 
   # Remove Temporary Files
-  rm -rf $MAIL_FILE $TMP_LOG_FILE
+  rm -rf $MAIL_FILE $NET_LOG_FILE $DIFF_LOG_FILE
  fi
 done

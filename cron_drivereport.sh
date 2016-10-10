@@ -43,6 +43,7 @@ do
         -v lastTestHours="$(smartctl -l selftest /dev/"$drive" | grep "# 1" | awk '{print $9}')" '\
         /Serial Number:/{serial=$3} \
         /Temperature_Celsius/{temp=$10} \
+        /Airflow_Temperature_Cel/{temp_air=$10} \
         /Power_On_Hours/{onHours=$10} \
         /Start_Stop_Count/{startStop=$10} \
         /Spin_Retry_Count/{spinRetry=$10} \
@@ -66,7 +67,13 @@ do
                 totalSeeks="N/A";
             }
             if (hiFlyWr == "") hiFlyWr="N/A";
+            if (startStop == "") startStop="N/A";
+            if (pending == "") pending="N/A";
+            if (spinRetry == "") spinRetry="N/A";
             if (cmdTimeout == "") cmdTimeout="N/A";
+            if (offlineUnc == "") offlineUnc="N/A";
+            if (crcErrors == "") crcErrors="N/A";
+            if (temp == "") temp=temp_air;
             printf "|%-6s|%-15s| %s |%5s|%5s|%5s|%7s|%7s|%8s|%6s|%6s|%6s|%7s|%4s|\n",
             device, serial, temp, onHours, startStop, spinRetry, reAlloc, pending, offlineUnc, \
             crcErrors, seekErrors, hiFlyWr, cmdTimeout, testAge;
